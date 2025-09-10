@@ -6,7 +6,7 @@ import { useDebounce } from "use-debounce";
 import { fetchNotes, deleteNote } from "@/lib/api";
 import { FetchNotesResponse } from "@/lib/api";
 
-import { SearchBar } from "@/components/SearchBar/SearchBar";
+import { SearchBar } from "@/components/SearchBox/SearchBox";
 import { Pagination } from "@/components/Pagination/Pagination";
 import { NoteList } from "@/components/NoteList/NoteList";
 import Modal from "@/components/Modal/Modal";
