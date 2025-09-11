@@ -1,6 +1,7 @@
+import ReactPaginate from "react-paginate";
 import css from "./Pagination.module.css";
 
-interface Props {
+interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (p: number) => void;
@@ -10,19 +11,20 @@ export const Pagination = ({
   currentPage,
   totalPages,
   onPageChange,
-}: Props) => {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+}: PaginationProps) => {
+
   return (
-    <div className={css.wrap}>
-      {pages.map((p) => (
-        <button
-          key={p}
-          className={p === currentPage ? css.active : css.page}
-          onClick={() => onPageChange(p)}
-        >
-          {p}
-        </button>
-      ))}
-    </div>
+    <ReactPaginate
+      pageCount={totalPages}
+      forcePage={currentPage - 1} 
+      onPageChange={(selected) => onPageChange(selected.selected + 1)}
+      containerClassName={css.wrap}
+      pageClassName={css.page}
+      activeClassName={css.active}
+      previousLabel="‹"
+      nextLabel="›"
+      breakLabel="..."
+      breakClassName={css.page}
+    />
   );
 };

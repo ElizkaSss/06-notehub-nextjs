@@ -1,23 +1,10 @@
 import axios from "axios";
-import { Note } from "@/types/note";
-
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}
-
-export interface FetchNotesParams {
-  page?: number;
-  perPage?: number;
-  search?: string;
-}
-
-// Тип для створення нотатки
-export interface CreateNoteDto {
-  title: string;
-  content: string;
-  tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
-}
+import {
+  Note,
+  CreateNoteDto,
+  FetchNotesParams,
+  FetchNotesResponse,
+} from "@/types/note";
 
 const API_URL = "https://notehub-public.goit.study/api/notes";
 
@@ -28,31 +15,28 @@ const axiosInstance = axios.create({
   },
 });
 
-// Отримання списку нотаток
-export const fetchNotes = async ({
-  page = 1,
-  perPage = 12,
-  search = "",
-}: FetchNotesParams): Promise<FetchNotesResponse> => {
-  const response = await axiosInstance.get<FetchNotesResponse>("", {
+export const fetchNotes = async (
+  params: FetchNotesParams = {}
+): Promise<FetchNotesResponse> => {
+  const { page = 1, perPage = 12, search = "" } = params;
+  const resp = await axiosInstance.get<FetchNotesResponse>("", {
     params: { page, perPage, search },
   });
-  return response.data;
+  return resp.data;
 };
 
-// Отримання однієї нотатки за id
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const response = await axiosInstance.get<Note>(`/${id}`);
-  return response.data;
+  const resp = await axiosInstance.get<Note>(`/${id}`);
+  return resp.data;
 };
 
-// Створення нотатки
 export const createNote = async (payload: CreateNoteDto): Promise<Note> => {
   const resp = await axiosInstance.post<Note>("", payload);
   return resp.data;
 };
 
-// Видалення нотатки
-export const deleteNote = async (id: string): Promise<void> => {
-  await axiosInstance.delete(`/${id}`);
+
+export const deleteNote = async (id: string): Promise<Note> => {
+  const resp = await axiosInstance.delete<Note>(`/${id}`);
+  return resp.data;
 };
